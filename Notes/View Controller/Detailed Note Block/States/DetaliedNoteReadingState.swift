@@ -17,7 +17,6 @@ class DetaliedNoteReadingState: DetaliedNoteState {
     func viewDidLoad() {
         view?.displayBarButton(item: .action)
         view?.updateTextViewEditableState(isEnabled: false)
-        view?.displayBarButton(item: .action)
     }
     
     func rightBarButtonPressed(note: String) {

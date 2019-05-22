@@ -29,7 +29,9 @@ class NoteCell: UITableViewCell {
         let components = dateTime.split(separator: " ").map { String($0) }
         dateLabel.text = components[0]
         timeLabel.text = components[1]
-        noteLabel.text = note
+        
+        let isLargeNote = note.count > 100
+        noteLabel.text = isLargeNote ? note.substring(to: 100) : note
     }
 
 }

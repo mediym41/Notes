@@ -1,0 +1,21 @@
+/* 
+  Localization.strings
+  Notes
+
+  Created by Mediym on 5/22/19.
+  Copyright © 2019 NSMedium. All rights reserved.
+*/
+
+"title.notes" = "Заметки";
+"title.save" = "Сохранить";
+"title.edit" = "Изменить";
+"title.delete" = "Удалить";
+"title.ok" = "Хорошо";
+
+"title.emptyTable" = "Нет Доступных Заметок";
+"subtitle.emptyTable" = "Вы можете добавить их нажав \"+\"";
+
+"title.search" = "Искать";
+
+"title.note.empty" = "Заметка пустая";
+"subtitle.note.empty" = "Вы не можете добавлять пустые заметки";

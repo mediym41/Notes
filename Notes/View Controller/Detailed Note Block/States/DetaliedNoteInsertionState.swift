@@ -6,28 +6,33 @@
 //  Copyright © 2019 NSMedium. All rights reserved.
 //
 
-protocol DetaliedNoteInsertionStateDelegate: class {
-    func detailedNoteView(_ detailedNoteView: DetailedNoteView, didAdd note: String)
-}
+import CoreData
 
 class DetaliedNoteInsertionState: DetaliedNoteState {
     private weak var view: DetailedNoteView?
-    private weak var delegate: DetaliedNoteInsertionStateDelegate?
+    private var managedObjectContext: NSManagedObjectContext!
     
-    init(view: DetailedNoteView, delegate: DetaliedNoteInsertionStateDelegate?) {
+    init(view: DetailedNoteView, context: NSManagedObjectContext) {
         self.view = view
-        self.delegate = delegate
+        self.managedObjectContext = context
     }
     
     // MARK: - DetaliedNoteState protocol
     func viewDidLoad() {
         view?.updateTextViewEditableState(isEnabled: true)
         view?.displayBarButton(title: "title.save")
-        //view?.showKeyboard()
     }
     
     func rightBarButtonPressed(note: String) {
-        guard let view = view else { return }
-        delegate?.detailedNoteView(view, didAdd: note)
+        guard !note.isEmpty else {
+            view?.displayError(title: s("title.note.empty"), message: s("subtitle.note.empty"))
+            return
+        }
+        
+        managedObjectContext.performChanges {
+            _ = Note.insert(into: self.managedObjectContext, text: note)
+        }
+        
+        view?.dissmiss()
     }
 }

@@ -6,6 +6,8 @@
 //  Copyright © 2019 NSMedium. All rights reserved.
 //
 
+import Foundation
+
 class DetaliedNoteEditionState: DetaliedNoteState {
     private weak var view: DetailedNoteView?
     var isEditing = false
@@ -28,13 +30,18 @@ class DetaliedNoteEditionState: DetaliedNoteState {
             view?.displayBarButton(title: "title.save")
         } else {
             view?.displayBarButton(title: "title.edit")
+            updateNote(text: note)
         }
     }
     
     // MARK: - Helpers
-    func updateNote() {
+    func updateNote(text: String) {
         guard let note = view?.note else { return }
         
+        note.managedObjectContext?.performChanges {
+            note.text = text
+            note.date = Date()
+        }
     }
     
 }

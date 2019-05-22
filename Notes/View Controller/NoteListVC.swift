@@ -7,16 +7,24 @@
 //
 
 import UIKit
+import CoreData
 
 class NoteListVC: UIViewController {
 
+    // MARK: - IBOutlet
+    @IBOutlet weak var noteTableView: EmptyTableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     // MARK: - Data
-    var data: [(String, Date)] = [("Some Text", Date())]
-
+    fileprivate var dataSource: TableViewDataSource<NoteListVC>!
+    var managedObjectContext: NSManagedObjectContext!
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        setupTableView()
+        localize()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -24,6 +32,30 @@ class NoteListVC: UIViewController {
         
         hideKeyboard()
     }
+    
+    // MARK: - Setup
+    func localize() {
+        navigationItem.title = s("title.notes")
+        searchBar.placeholder = s("title.search")
+    }
+    
+    fileprivate func setupTableView() {
+        noteTableView.tableFooterView = UIView()
+        noteTableView.title = s("title.emptyTable")
+        noteTableView.message = s("subtitle.emptyTable")
+        
+        let request = Note.sortedFetchRequest
+        request.fetchBatchSize = 20
+        request.returnsObjectsAsFaults = false
+        let frc = NSFetchedResultsController(fetchRequest: request,
+                                             managedObjectContext: managedObjectContext,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
+        dataSource = TableViewDataSource(tableView: noteTableView,
+                                         fetchedResultsController: frc,
+                                         delegate: self)
+    }
+
     
     // MARK: - Helpers
     func hideKeyboard() {
@@ -67,7 +99,9 @@ class NoteListVC: UIViewController {
     
     @IBAction func addButtonTapped(_ sender: Any) {
         let vc = DetailedNoteVC.instantiate(fromAppStoryboard: .main)
-        let state = DetaliedNoteInsertionState(view: vc, delegate: self)
+        let state = DetaliedNoteInsertionState(view: vc,
+                                               context: managedObjectContext)
+        
         vc.state = state
         
         navigationController?.pushViewController(vc, animated: true)
@@ -76,30 +110,37 @@ class NoteListVC: UIViewController {
 }
 
 // MARK: - UITableViewDelegate protocol
-extension NoteListVC: UITableViewDelegate {
+extension NoteListVC: UITableViewDelegate {    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let d = data[indexPath.item]
         let vc = DetailedNoteVC.instantiate(fromAppStoryboard: .main)
         let state = DetaliedNoteReadingState(view: vc)
-        vc.state = state
+        let note = dataSource.objectAtIndexPath(indexPath)
+        vc.setup(state: state, note: note)
         
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, handler) in
-            self.data.remove(at: indexPath.item)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+        let deleteAction = UIContextualAction(style: .destructive, title: s("title.delete")) {
+            (action, view, handler) in
+
+            let note = self.dataSource.objectAtIndexPath(indexPath)
+            note.managedObjectContext?.performChanges {
+                note.managedObjectContext?.delete(note)
+            }
+            
             handler(true)
         }
         
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, handler) in
+        let editAction = UIContextualAction(style: .normal, title: s("title.edit")) {
+            (action, view, handler) in
             
             let vc = DetailedNoteVC.instantiate(fromAppStoryboard: .main)
+            let note = self.dataSource.objectAtIndexPath(indexPath)
             let state = DetaliedNoteEditionState(view: vc)
-            vc.state = state
+            vc.setup(state: state, note: note)
             
             self.navigationController?.pushViewController(vc, animated: true)
             
@@ -112,28 +153,16 @@ extension NoteListVC: UITableViewDelegate {
     
 }
 
-// MARK: - UITableViewDataSource protocol
-extension NoteListVC: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+// MARK: - TableViewDataSourceDelegate
+extension NoteListVC: TableViewDataSourceDelegate {
+    typealias Object = Note
+    typealias Cell = NoteCell
+    
+    func configure(_ cell: NoteCell, for object: Note) {
+        cell.configure(note: object.text, date: object.date)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(with: NoteCell.self, for: indexPath)
-        let d = data[indexPath.item]
-        cell.configure(note: d.0, date: d.1)
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 84
-    }
-}
-
-// MARK: - DetaliedNoteInsertionStateDelegate protocol
-extension NoteListVC: DetaliedNoteInsertionStateDelegate {
-    func detailedNoteView(_ detailedNoteView: DetailedNoteView, didAdd note: String) {
-        
+    func tableView(_ tableView: UITableView, didUpdateRowNubmer count: Int) {
+        noteTableView.isEmpty = count == 0
     }
 }

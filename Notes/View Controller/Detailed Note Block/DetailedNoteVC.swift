@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import IQKeyboardManagerSwift
 
 protocol DetaliedNoteState {
     func rightBarButtonPressed(note: String)
@@ -17,18 +18,19 @@ protocol DetaliedNoteState {
 protocol DetailedNoteView: class {
     var note: Note? { get }
     func updateTextViewEditableState(isEnabled: Bool)
-    func rightBarButtonPressed(note: String)
     func shareNote(items: [Any])
-    func showKeyboard()
+    func updateKeyboard(isEnabled: Bool)
     func dissmiss()
     func displayBarButton(title: String)
     func displayBarButton(item: UIBarButtonItem.SystemItem)
+    func displayNote(text: String)
+    func displayError(title: String, message: String)
 }
 
 class DetailedNoteVC: UIViewController {
     
     // MARK: - IBOutlet
-    @IBOutlet weak var noteTextView: UITextView!
+    @IBOutlet weak var noteTextView: IQTextView!
     
     // MARK: - State
     var state: DetaliedNoteState!
@@ -46,16 +48,20 @@ class DetailedNoteVC: UIViewController {
         super.viewDidAppear(animated)
         
         if noteTextView.isEditable {
-            showKeyboard()
+            updateKeyboard(isEnabled: true)
         }
     }
     
     // MARK: - Setup
+    func setup(state: DetaliedNoteState, note: Note?) {
+        self.state = state
+        self.note = note
+    }
+    
     func setupNoteTextView() {
         noteTextView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        if let note = note {
-            noteTextView.text = note.text
-        }
+        noteTextView.inputAccessoryView = nil
+        noteTextView.text = note?.text
     }
     
     // MARK: - Selectors
@@ -69,10 +75,7 @@ class DetailedNoteVC: UIViewController {
 extension DetailedNoteVC: DetailedNoteView {
     func updateTextViewEditableState(isEnabled: Bool) {
         noteTextView.isEditable = isEnabled
-    }
-    
-    func rightBarButtonPressed(note: String) {
-        
+        noteTextView.inputAccessoryView = nil
     }
     
     func shareNote(items: [Any]) {
@@ -80,8 +83,12 @@ extension DetailedNoteVC: DetailedNoteView {
         present(activityVC, animated: true)
     }
     
-    func showKeyboard() {
-        noteTextView.becomeFirstResponder()
+    func updateKeyboard(isEnabled: Bool) {
+        if isEnabled {
+            noteTextView.becomeFirstResponder()
+        } else {
+            noteTextView.resignFirstResponder()
+        }
     }
     
     func dissmiss() {
@@ -89,11 +96,15 @@ extension DetailedNoteVC: DetailedNoteView {
     }
     
     func displayBarButton(title: String) {
-        let rightBarButton = UIBarButtonItem(title: title,
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(rightBarButtonPressed(_:)))
-        self.navigationItem.rightBarButtonItem = rightBarButton
+        if let barButton = navigationItem.rightBarButtonItem {
+            barButton.title = s(title)
+        } else {
+            let rightBarButton = UIBarButtonItem(title: s(title),
+                                                 style: .plain,
+                                                 target: self,
+                                                 action: #selector(rightBarButtonPressed(_:)))
+            navigationItem.rightBarButtonItem = rightBarButton
+        }
     }
     
     func displayBarButton(item: UIBarButtonItem.SystemItem) {
@@ -103,5 +114,14 @@ extension DetailedNoteVC: DetailedNoteView {
         navigationItem.setRightBarButton(rightBarButton, animated: true)
     }
     
+    func displayNote(text: String) {
+        noteTextView.text = s(text)
+    }
     
+    func displayError(title: String, message: String) {
+        let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: s("title.ok"), style: .cancel)
+        alertVC.addAction(cancelAction)
+        present(alertVC, animated: true)
+    }
 }

@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,9 +15,42 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S8N-AT-Vgh">
+                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <items>
+                                    <navigationItem id="n63-tG-gWh">
+                                        <rightBarButtonItems>
+                                            <barButtonItem style="plain" systemItem="add" id="oij-bR-LhZ"/>
+                                            <barButtonItem image="SortIcon" id="nZK-bh-2sB"/>
+                                        </rightBarButtonItems>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rXv-6C-jaB">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <color key="backgroundColor" red="0.97647720575332642" green="0.97645896673202515" blue="0.97647136449813843" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </view>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="hDR-TY-23w">
+                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="hDR-TY-23w" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="386-75-fDf"/>
+                            <constraint firstItem="hDR-TY-23w" firstAttribute="top" secondItem="S8N-AT-Vgh" secondAttribute="bottom" id="4J5-4k-Ts4"/>
+                            <constraint firstItem="hDR-TY-23w" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="7Wx-A2-e2Z"/>
+                            <constraint firstAttribute="trailing" secondItem="rXv-6C-jaB" secondAttribute="trailing" id="EZR-HG-tRV"/>
+                            <constraint firstItem="rXv-6C-jaB" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="top" id="M45-ij-ZzC"/>
+                            <constraint firstItem="S8N-AT-Vgh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WXi-yR-8x5"/>
+                            <constraint firstItem="S8N-AT-Vgh" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="aBH-jQ-4EB"/>
+                            <constraint firstItem="S8N-AT-Vgh" firstAttribute="top" secondItem="rXv-6C-jaB" secondAttribute="bottom" id="iHZ-VP-q2A"/>
+                            <constraint firstItem="rXv-6C-jaB" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="sjh-tS-Acr"/>
+                            <constraint firstItem="rXv-6C-jaB" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="ybC-TK-aQ5"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -22,4 +59,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="SortIcon" width="22" height="20"/>
+    </resources>
 </document>

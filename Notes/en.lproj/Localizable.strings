@@ -1,0 +1,21 @@
+/* 
+  Localization.strings
+  Notes
+
+  Created by Mediym on 5/22/19.
+  Copyright © 2019 NSMedium. All rights reserved.
+*/
+
+"title.notes" = "Notes";
+"title.save" = "Save";
+"title.edit" = "Edit";
+"title.delete" = "Delete";
+"title.ok" = "OK";
+
+"title.emptyTable" = "No Available Notes";
+"subtitle.emptyTable" = "You can add, just press \"+\"";
+
+"title.search" = "Search";
+
+"title.note.empty" = "Note is empty";
+"subtitle.note.empty" = "You can't add empty note";
