@@ -137,7 +137,11 @@ class NoteListVC: UIViewController {
 }
 
 // MARK: - UITableViewDelegate protocol
-extension NoteListVC: UITableViewDelegate {    
+extension NoteListVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 83
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
