@@ -18,3 +18,11 @@ extension Date {
         return formatter.string(from: self)
     }
 }
+
+extension String {
+    var normalizedForSearch: String {
+        let transformed = applyingTransform(StringTransform("Any-Latin; Latin-ASCII; Lower"),
+                                            reverse: false)
+        return transformed ?? ""
+    }
+}

@@ -11,6 +11,7 @@
 "title.edit" = "Изменить";
 "title.delete" = "Удалить";
 "title.ok" = "Хорошо";
+"title.cancel" = "Отменить";
 
 "title.emptyTable" = "Нет Доступных Заметок";
 "subtitle.emptyTable" = "Вы можете добавить их нажав \"+\"";
@@ -19,3 +20,11 @@
 
 "title.note.empty" = "Заметка пустая";
 "subtitle.note.empty" = "Вы не можете добавлять пустые заметки";
+
+"sort.note.date" = "Сортировать по дате";
+"sort.note.text" = "Сортировать по тексту";
+"sort.note.date.asc" = "От старых к новым";
+"sort.note.date.desc" = "От новых к старым";
+"sort.note.text.asc" = "По возрастанию (А - Я)";
+"sort.note.text.desc" = "По убыванию (Я - А)";
+

@@ -6,16 +6,23 @@
   Copyright © 2019 NSMedium. All rights reserved.
 */
 
+"title.search" = "Search";
 "title.notes" = "Notes";
 "title.save" = "Save";
 "title.edit" = "Edit";
 "title.delete" = "Delete";
 "title.ok" = "OK";
+"title.cancel" = "Cancel";
 
 "title.emptyTable" = "No Available Notes";
 "subtitle.emptyTable" = "You can add, just press \"+\"";
 
-"title.search" = "Search";
+"error.noteEmpty.title" = "Note is empty";
+"error.noteEmpty.subtitle" = "You can't add empty note";
 
-"title.note.empty" = "Note is empty";
-"subtitle.note.empty" = "You can't add empty note";
+"sort.note.date" = "Sort by date";
+"sort.note.text" = "Sort by text";
+"sort.note.date.asc" = "Sort from old to new";
+"sort.note.date.desc" = "Sort from new to old";
+"sort.note.text.asc" = "Sort from A to Z";
+"sort.note.text.desc" = "Sort from Z to A";

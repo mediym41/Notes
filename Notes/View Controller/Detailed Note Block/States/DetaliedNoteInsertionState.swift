@@ -8,7 +8,7 @@
 
 import CoreData
 
-class DetaliedNoteInsertionState: DetaliedNoteState {
+class DetaliedNoteVCInsertionState: DetaliedNoteVCState {
     private weak var view: DetailedNoteView?
     private var managedObjectContext: NSManagedObjectContext!
     
@@ -17,7 +17,7 @@ class DetaliedNoteInsertionState: DetaliedNoteState {
         self.managedObjectContext = context
     }
     
-    // MARK: - DetaliedNoteState protocol
+    // MARK: - DetaliedNoteVCState protocol
     func viewDidLoad() {
         view?.updateTextViewEditableState(isEnabled: true)
         view?.displayBarButton(title: "title.save")

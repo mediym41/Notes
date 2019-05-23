@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import IQKeyboardManagerSwift
 
-protocol DetaliedNoteState {
+protocol DetaliedNoteVCState {
     func rightBarButtonPressed(note: String)
     func viewDidLoad()
 }
@@ -33,7 +33,7 @@ class DetailedNoteVC: UIViewController {
     @IBOutlet weak var noteTextView: IQTextView!
     
     // MARK: - State
-    var state: DetaliedNoteState!
+    var state: DetaliedNoteVCState!
     var note: Note?
     
     // MARK: - Lifecycle
@@ -53,7 +53,7 @@ class DetailedNoteVC: UIViewController {
     }
     
     // MARK: - Setup
-    func setup(state: DetaliedNoteState, note: Note?) {
+    func setup(state: DetaliedNoteVCState, note: Note?) {
         self.state = state
         self.note = note
     }
@@ -80,6 +80,7 @@ extension DetailedNoteVC: DetailedNoteView {
     
     func shareNote(items: [Any]) {
         let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = view // fix for iPads
         present(activityVC, animated: true)
     }
     

@@ -13,6 +13,7 @@ import CoreData
 protocol TableViewDataSourceDelegate: class {
     associatedtype Object: NSFetchRequestResult
     associatedtype Cell: UITableViewCell
+    
     func configure(_ cell: Cell, for object: Object)
     func tableView(_ tableView: UITableView, didUpdateRowNubmer count: Int)
 }
@@ -26,6 +27,11 @@ extension TableViewDataSourceDelegate {
 class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     typealias Object = Delegate.Object
     typealias Cell = Delegate.Cell
+    
+    // MARK: Private
+    fileprivate let tableView: UITableView
+    fileprivate let fetchedResultsController: NSFetchedResultsController<Object>
+    fileprivate weak var delegate: Delegate!
     
     required init(tableView: UITableView, fetchedResultsController: NSFetchedResultsController<Object>, delegate: Delegate) {
         self.tableView = tableView
@@ -51,15 +57,14 @@ class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject, UITa
     func reconfigureFetchRequest(_ configure: (NSFetchRequest<Object>) -> ()) {
         NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: fetchedResultsController.cacheName)
         configure(fetchedResultsController.fetchRequest)
-        do { try fetchedResultsController.performFetch() } catch { fatalError("fetch request failed") }
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("fetch request failed")
+        }
+        
         tableView.reloadData()
     }
-    
-    
-    // MARK: Private
-    fileprivate let tableView: UITableView
-    fileprivate let fetchedResultsController: NSFetchedResultsController<Object>
-    fileprivate weak var delegate: Delegate!
     
     // MARK: UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

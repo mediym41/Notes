@@ -28,7 +28,6 @@ class EmptyTableView: UITableView {
         stackView.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
         stackView.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
         
-        //self.addSubview(emptyView)
         return emptyView
     }()
     
@@ -50,18 +49,17 @@ class EmptyTableView: UITableView {
         return messageLabel
     }()
     
-    public var title: String = "No available notes" {
+    public var title: String = "Empty table view" {
         didSet {
             titleLabel.text = title
         }
     }
-    public var message: String = "But you can add by pressing plus button" {
+    public var message: String = "" {
         didSet {
             messageLabel.text = message
         }
     }
     
-    //FIXME: Separator style
     func handleState() {
         backgroundView = isEmpty ? emptyView : nil
         isScrollEnabled = !isEmpty

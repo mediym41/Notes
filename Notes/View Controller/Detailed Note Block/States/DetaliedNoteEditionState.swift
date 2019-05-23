@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DetaliedNoteEditionState: DetaliedNoteState {
+class DetaliedNoteVCEditingState: DetaliedNoteVCState {
     private weak var view: DetailedNoteView?
     var isEditing = false
     
@@ -16,7 +16,7 @@ class DetaliedNoteEditionState: DetaliedNoteState {
         self.view = view
     }
     
-    // MARK: - DetaliedNoteState protocol
+    // MARK: - DetaliedNoteVCState protocol
     func viewDidLoad() {
         view?.updateTextViewEditableState(isEnabled: false)
         view?.displayBarButton(title: "title.edit")

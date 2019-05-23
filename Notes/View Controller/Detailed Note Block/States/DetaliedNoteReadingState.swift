@@ -6,14 +6,14 @@
 //  Copyright © 2019 NSMedium. All rights reserved.
 //
 
-class DetaliedNoteReadingState: DetaliedNoteState {
+class DetaliedNoteVCReadingState: DetaliedNoteVCState {
     private weak var view: DetailedNoteView?
     
     init(view: DetailedNoteView) {
         self.view = view
     }
     
-    // MARK: - DetaliedNoteState protocol
+    // MARK: - DetaliedNoteVCState protocol
     func viewDidLoad() {
         view?.displayBarButton(item: .action)
         view?.updateTextViewEditableState(isEnabled: false)

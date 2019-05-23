@@ -62,14 +62,42 @@ class NoteListVC: UIViewController {
         view.endEditing(true)
     }
     
-    func presentSortDireaction() {
-        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let sortByDateAction = UIAlertAction(title: "Sort ascending", style: .default)
-        let sortByLetterAction = UIAlertAction(title: "Sort descending", style: .default)
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+    func updateNoteList(by filter: String) {
+        var predicate: NSPredicate? = nil
+        if !filter.isEmpty {
+            predicate = NSPredicate(format: "%K contains[n] %@",
+                                    Note.normalizedTextKey,
+                                    filter.normalizedForSearch)
+        }
         
-        alertVC.addAction(sortByDateAction)
-        alertVC.addAction(sortByLetterAction)
+        dataSource.reconfigureFetchRequest { fetchRequest in
+            fetchRequest.predicate = predicate
+        }
+    }
+    
+    func updateNoteList(by sortDescriptor: NSSortDescriptor) {
+        dataSource.reconfigureFetchRequest { fetchRequest in
+            fetchRequest.sortDescriptors = [sortDescriptor]
+        }
+    }
+    
+    func presentSortDirection(titleBase: String, key: String) {
+        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let sortByAsc = UIAlertAction(title: s(titleBase + ".asc"), style: .default) { _ in
+            let descriptor = NSSortDescriptor(key: key, ascending: true)
+            self.updateNoteList(by: descriptor)
+        }
+        
+        let sortByDesc = UIAlertAction(title: s(titleBase + ".desc"), style: .default) { _ in
+            let descriptor = NSSortDescriptor(key: key, ascending: false)
+            self.updateNoteList(by: descriptor)
+        }
+        
+        let cancel = UIAlertAction(title: s("title.cancel"), style: .cancel)
+        
+        alertVC.addAction(sortByAsc)
+        alertVC.addAction(sortByDesc)
         alertVC.addAction(cancel)
         
         present(alertVC, animated: true)
@@ -77,21 +105,20 @@ class NoteListVC: UIViewController {
     
     // MARK: - IBActions
     @IBAction func sortButtonTapped(_ sender: Any) {
-
         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let sortByDateAction = UIAlertAction(title: "Sort by date", style: .default) { _ in
-            self.presentSortDireaction()
+        let sortByDateAction = UIAlertAction(title: s("sort.note.date"), style: .default) { _ in
+            self.presentSortDirection(titleBase: "sort.note.date", key: #keyPath(Note.date))
         }
-        let sortByLetterAction = UIAlertAction(title: "Sort by letters", style: .default) { _ in
-            self.presentSortDireaction()
+        let sortByLetterAction = UIAlertAction(title: s("sort.note.text"), style: .default) { _ in
+            self.presentSortDirection(titleBase: "sort.note.text", key: #keyPath(Note.textPrimitive))
         }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancel = UIAlertAction(title: s("title.cancel"), style: .cancel)
         
         alertVC.addAction(sortByDateAction)
         alertVC.addAction(sortByLetterAction)
         alertVC.addAction(cancel)
         
-        // It calls autolayout error on iOS 12.2
+        // It invokes autolayout error on iOS 12.2
         // Read more
         // https://stackoverflow.com/questions/55653187/swift-default-alertviewcontroller-breaking-constraints
         present(alertVC, animated: true)
@@ -99,8 +126,8 @@ class NoteListVC: UIViewController {
     
     @IBAction func addButtonTapped(_ sender: Any) {
         let vc = DetailedNoteVC.instantiate(fromAppStoryboard: .main)
-        let state = DetaliedNoteInsertionState(view: vc,
-                                               context: managedObjectContext)
+        let state = DetaliedNoteVCInsertionState(view: vc,
+                                                 context: managedObjectContext)
         
         vc.state = state
         
@@ -115,7 +142,7 @@ extension NoteListVC: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let vc = DetailedNoteVC.instantiate(fromAppStoryboard: .main)
-        let state = DetaliedNoteReadingState(view: vc)
+        let state = DetaliedNoteVCReadingState(view: vc)
         let note = dataSource.objectAtIndexPath(indexPath)
         vc.setup(state: state, note: note)
         
@@ -126,6 +153,7 @@ extension NoteListVC: UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: s("title.delete")) {
             (action, view, handler) in
 
+            // Deleting invokes autolayout error on iOS 12.2
             let note = self.dataSource.objectAtIndexPath(indexPath)
             note.managedObjectContext?.performChanges {
                 note.managedObjectContext?.delete(note)
@@ -139,7 +167,7 @@ extension NoteListVC: UITableViewDelegate {
             
             let vc = DetailedNoteVC.instantiate(fromAppStoryboard: .main)
             let note = self.dataSource.objectAtIndexPath(indexPath)
-            let state = DetaliedNoteEditionState(view: vc)
+            let state = DetaliedNoteVCEditingState(view: vc)
             vc.setup(state: state, note: note)
             
             self.navigationController?.pushViewController(vc, animated: true)
@@ -153,7 +181,7 @@ extension NoteListVC: UITableViewDelegate {
     
 }
 
-// MARK: - TableViewDataSourceDelegate
+// MARK: - TableViewDataSourceDelegate protocol
 extension NoteListVC: TableViewDataSourceDelegate {
     typealias Object = Note
     typealias Cell = NoteCell
@@ -164,5 +192,34 @@ extension NoteListVC: TableViewDataSourceDelegate {
     
     func tableView(_ tableView: UITableView, didUpdateRowNubmer count: Int) {
         noteTableView.isEmpty = count == 0
+    }
+}
+
+// MARK: - UISearchBarDelegate protocol
+extension NoteListVC: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.setShowsCancelButton(true, animated: true)
+        
+        return true
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.setShowsCancelButton(false, animated: true)
+        
+        return true
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        updateNoteList(by: searchText)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        updateNoteList(by: "")
     }
 }

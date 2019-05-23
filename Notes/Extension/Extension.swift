@@ -27,4 +27,5 @@ extension String {
         let endIndex = index(from: r.upperBound)
         return String(self[startIndex..<endIndex])
     }
+    
 }

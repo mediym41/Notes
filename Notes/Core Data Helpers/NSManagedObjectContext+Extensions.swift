@@ -3,7 +3,6 @@ import CoreData
 
 
 extension NSManagedObjectContext {
-
     private var store: NSPersistentStore {
         guard let psc = persistentStoreCoordinator else { fatalError("PSC missing") }
         guard let store = psc.persistentStores.first else { fatalError("No Store") }
@@ -76,3 +75,11 @@ extension NSManagedObjectContext {
     }
 }
 
+
+extension NSManagedObject {
+    convenience init(usedContext: NSManagedObjectContext) {
+        let name = String(describing: type(of: self))
+        let entity = NSEntityDescription.entity(forEntityName: name, in: usedContext)!
+        self.init(entity: entity, insertInto: usedContext)
+    }
+}
