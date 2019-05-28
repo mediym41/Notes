@@ -1,5 +1,5 @@
 //
-//  DetaliedNoteReadingState.swift
+//  DetaliedNoteVCReadingState.swift
 //  Notes
 //
 //  Created by Mediym on 5/21/19.

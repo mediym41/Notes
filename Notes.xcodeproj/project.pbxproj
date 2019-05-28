@@ -24,9 +24,9 @@
 		1D490F5C22946FE100E6BD36 /* Managed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D490F4E22946FE100E6BD36 /* Managed.swift */; };
 		1D490F622294717600E6BD36 /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D490F612294717600E6BD36 /* TableViewDataSource.swift */; };
 		1DC7F44522943BE6004CBD41 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7F44422943BE6004CBD41 /* Note.swift */; };
-		1DC7F44922944AB9004CBD41 /* DetaliedNoteReadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7F44822944AB9004CBD41 /* DetaliedNoteReadingState.swift */; };
-		1DC7F44B22944AC2004CBD41 /* DetaliedNoteEditionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7F44A22944AC2004CBD41 /* DetaliedNoteEditionState.swift */; };
-		1DC7F44D22944ACA004CBD41 /* DetaliedNoteInsertionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7F44C22944ACA004CBD41 /* DetaliedNoteInsertionState.swift */; };
+		1DC7F44922944AB9004CBD41 /* DetaliedNoteVCReadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7F44822944AB9004CBD41 /* DetaliedNoteVCReadingState.swift */; };
+		1DC7F44B22944AC2004CBD41 /* DetaliedNoteVCEditingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7F44A22944AC2004CBD41 /* DetaliedNoteVCEditingState.swift */; };
+		1DC7F44D22944ACA004CBD41 /* DetaliedNoteVCInsertionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC7F44C22944ACA004CBD41 /* DetaliedNoteVCInsertionState.swift */; };
 		1DC8F48F22934AC200C1DBBD /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8F48E22934AC200C1DBBD /* NoteCell.swift */; };
 		1DC8F49222934BAB00C1DBBD /* Extension+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8F49122934BAB00C1DBBD /* Extension+Foundation.swift */; };
 		1DC8F49422934DA100C1DBBD /* Extension+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8F49322934DA100C1DBBD /* Extension+UIKit.swift */; };
@@ -55,9 +55,9 @@
 		1D490F4E22946FE100E6BD36 /* Managed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Managed.swift; sourceTree = "<group>"; };
 		1D490F612294717600E6BD36 /* TableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		1DC7F44422943BE6004CBD41 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
-		1DC7F44822944AB9004CBD41 /* DetaliedNoteReadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaliedNoteReadingState.swift; sourceTree = "<group>"; };
-		1DC7F44A22944AC2004CBD41 /* DetaliedNoteEditionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaliedNoteEditionState.swift; sourceTree = "<group>"; };
-		1DC7F44C22944ACA004CBD41 /* DetaliedNoteInsertionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaliedNoteInsertionState.swift; sourceTree = "<group>"; };
+		1DC7F44822944AB9004CBD41 /* DetaliedNoteVCReadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaliedNoteVCReadingState.swift; sourceTree = "<group>"; };
+		1DC7F44A22944AC2004CBD41 /* DetaliedNoteVCEditingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaliedNoteVCEditingState.swift; sourceTree = "<group>"; };
+		1DC7F44C22944ACA004CBD41 /* DetaliedNoteVCInsertionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaliedNoteVCInsertionState.swift; sourceTree = "<group>"; };
 		1DC8F48E22934AC200C1DBBD /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		1DC8F49122934BAB00C1DBBD /* Extension+Foundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Foundation.swift"; sourceTree = "<group>"; };
 		1DC8F49322934DA100C1DBBD /* Extension+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIKit.swift"; sourceTree = "<group>"; };
@@ -156,9 +156,9 @@
 		1DC7F44722944AA0004CBD41 /* States */ = {
 			isa = PBXGroup;
 			children = (
-				1DC7F44822944AB9004CBD41 /* DetaliedNoteReadingState.swift */,
-				1DC7F44A22944AC2004CBD41 /* DetaliedNoteEditionState.swift */,
-				1DC7F44C22944ACA004CBD41 /* DetaliedNoteInsertionState.swift */,
+				1DC7F44822944AB9004CBD41 /* DetaliedNoteVCReadingState.swift */,
+				1DC7F44A22944AC2004CBD41 /* DetaliedNoteVCEditingState.swift */,
+				1DC7F44C22944ACA004CBD41 /* DetaliedNoteVCInsertionState.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -349,20 +349,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D490F622294717600E6BD36 /* TableViewDataSource.swift in Sources */,
-				1DC7F44922944AB9004CBD41 /* DetaliedNoteReadingState.swift in Sources */,
+				1DC7F44922944AB9004CBD41 /* DetaliedNoteVCReadingState.swift in Sources */,
 				1D08F5E7229479E10084AB11 /* Notes.xcdatamodeld in Sources */,
 				1D12CE0422955270004AE0B0 /* Extension.swift in Sources */,
 				1D08F5E922947BE80084AB11 /* EmptyTableView.swift in Sources */,
 				1DC8F49422934DA100C1DBBD /* Extension+UIKit.swift in Sources */,
 				1D08F5ED22948C0A0084AB11 /* CoreDataStack.swift in Sources */,
-				1DC7F44D22944ACA004CBD41 /* DetaliedNoteInsertionState.swift in Sources */,
+				1DC7F44D22944ACA004CBD41 /* DetaliedNoteVCInsertionState.swift in Sources */,
 				1D490F5322946FE100E6BD36 /* NSManagedObjectContext+Extensions.swift in Sources */,
 				1D490F5C22946FE100E6BD36 /* Managed.swift in Sources */,
 				1D1F5A8D2293094000E2A2A7 /* NoteListVC.swift in Sources */,
 				1D1F5A9D2293363B00E2A2A7 /* DetailedNoteVC.swift in Sources */,
 				1D12CE1422955C98004AE0B0 /* Localization.swift in Sources */,
 				1D08F5EB22948BC10084AB11 /* AppManager.swift in Sources */,
-				1DC7F44B22944AC2004CBD41 /* DetaliedNoteEditionState.swift in Sources */,
+				1DC7F44B22944AC2004CBD41 /* DetaliedNoteVCEditingState.swift in Sources */,
 				1DC8F49222934BAB00C1DBBD /* Extension+Foundation.swift in Sources */,
 				1DC7F44522943BE6004CBD41 /* Note.swift in Sources */,
 				1DC8F49622934ECF00C1DBBD /* AppStoruboard.swift in Sources */,
