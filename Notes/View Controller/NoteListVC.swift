@@ -58,6 +58,13 @@ class NoteListVC: UIViewController {
 
     
     // MARK: - Helpers
+    func scrollToTopIfNeeded() {
+        guard noteTableView.contentOffset.y != 0 else { return }
+        noteTableView.beginUpdates()
+        noteTableView.setContentOffset(CGPoint.zero, animated: true)
+        noteTableView.endUpdates()
+    }
+    
     func hideKeyboard() {
         view.endEditing(true)
     }
@@ -215,6 +222,7 @@ extension NoteListVC: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         updateNoteList(by: searchText)
+        scrollToTopIfNeeded()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
